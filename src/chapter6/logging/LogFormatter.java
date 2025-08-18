@@ -33,10 +33,10 @@ public class LogFormatter extends Formatter {
 
 		Date instant = new Date(record.getMillis());
 		sb.append(formatter.format(instant));
-		sb.append("");
+		sb.append(" ");
 
 		sb.append(levelMsgMap.get(record.getLevel()));
-		sb.append("");
+		sb.append(" ");
 
 		sb.append(formatMessage(record));
 
