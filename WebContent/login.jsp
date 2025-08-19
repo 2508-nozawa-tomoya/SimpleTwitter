@@ -8,6 +8,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 		<title>ログイン</title>
+		<link href="./css/style.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 		<div class="main-contents">
