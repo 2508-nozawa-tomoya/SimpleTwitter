@@ -12,6 +12,7 @@
 	</head>
 	<body>
 		<div class="main-contents">
+			<!--ヘッダー -->
 			<div class="header">
 				<c:if test="${ empty loginUser }">
 					<a href="login">ログイン</a>
@@ -24,6 +25,7 @@
 				</c:if>
 
 			</div>
+			<!--ユーザー情報表示 -->
 			<c:if test="${ not empty loginUser }">
 				<div class="profile">
 					<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
@@ -31,6 +33,40 @@
 					<div class="description"><c:out value="${loginUser.description }" /></div>
 				</div>
 			</c:if>
+			<c:if test="${ not empty errorMessages }">
+				<div class="errorMessages">
+					<ul>
+					<c:forEach items="${errorMessages}" var="errorMessage">
+						<li><c:out value="${errorMessage}" />
+					</c:forEach>
+					</ul>
+				</div>
+				<c:remove var="errorMessage" scope="session" />
+			</c:if>
+			<!--メッセージフォーム表示 -->
+			<div class="form-area">
+				<c:if test="${ isShowMessageForm }">
+					<form action="message" method="post">
+						いま、どうしてる？<br />
+						<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+						<br />
+						<input type="submit" value="つぶやく"> (140文字まで)
+					</form>
+				</c:if>
+			</div>
+			<!--メッセージ表示 -->
+			<div class="messages">
+				<c:forEach items="${messages}" var="message">
+					<div class="message">
+						<div class="account-name">
+							<span class="account"><c:out value="${message.account}" /></span>
+							<span class="name"><c:out value="${message.name}" /></span>
+						</div>
+						<div class="text"><c:out value="${message.text}" /></div>
+						<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyy/MM/dd HH:mm:ss" /></div>
+					</div>
+				</c:forEach>
+			</div>
 			<div class="copyright">Copyright(c)TomoyaNozawa</div>
 		</div>
 	</body>
