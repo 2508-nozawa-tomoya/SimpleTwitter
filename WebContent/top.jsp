@@ -13,9 +13,24 @@
 	<body>
 		<div class="main-contents">
 			<div class="header">
-				<a href="login">ログイン</a>
-				<a href="signup">登録する</a>
+				<c:if test="${ empty loginUser }">
+					<a href="login">ログイン</a>
+					<a href="signup">登録する</a>
+				</c:if>
+				<c:if test="${ not empty loginUser }">
+					<a href="./">ホーム</a>
+					<a href="setting">設定</a>
+					<a href="logout">ログアウト</a>
+				</c:if>
+
 			</div>
+			<c:if test="${ not empty loginUser }">
+				<div class="profile">
+					<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
+					<div class="account">@<c:out value="${loginUser.account }" /></div>
+					<div class="description"><c:out value="${loginUser.description }" /></div>
+				</div>
+			</c:if>
 			<div class="copyright">Copyright(c)TomoyaNozawa</div>
 		</div>
 	</body>
