@@ -30,26 +30,48 @@ public class UserMessageDao {
 		application.init();
 	}
 
-	public List<UserMessage> select(Connection connection, int num){
+
+	public List<UserMessage> select(Connection connection, Integer id, int num){
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT ");
-			sql.append("    messages.id as id, ");
-			sql.append("    messages.text as text, ");
-			sql.append("    messages.user_id as user_id, ");
-			sql.append("    users.account as account, ");
-			sql.append("    users.name as name, ");
-			sql.append("    messages.created_date as created_date ");
-			sql.append("FROM messages ");
-			sql.append("INNER JOIN users ");
-			sql.append("ON messages.user_id = users.id ");
-			sql.append("ORDER BY created_date DESC limit " + num);
 
-			ps = connection.prepareStatement(sql.toString());
+			if(id != null) {
+				sql.append("SELECT ");
+				sql.append("    messages.id as id, ");
+				sql.append("    messages.text as text, ");
+				sql.append("    messages.user_id as user_id, ");
+				sql.append("    users.account as account, ");
+				sql.append("    users.name as name, ");
+				sql.append("    messages.created_date as created_date ");
+				sql.append("FROM messages ");
+				sql.append("INNER JOIN users ");
+				sql.append("ON messages.user_id = users.id ");
+				sql.append("WHERE user_id = ? ");
+				sql.append("ORDER BY created_date DESC limit " + num);
+
+				ps = connection.prepareStatement(sql.toString());
+
+				ps.setInt(1, id);
+			} else {
+				sql.append("SELECT ");
+				sql.append("    messages.id as id, ");
+				sql.append("    messages.text as text, ");
+				sql.append("    messages.user_id as user_id, ");
+				sql.append("    users.account as account, ");
+				sql.append("    users.name as name, ");
+				sql.append("    messages.created_date as created_date ");
+				sql.append("FROM messages ");
+				sql.append("INNER JOIN users ");
+				sql.append("ON messages.user_id = users.id ");
+				sql.append("ORDER BY created_date DESC limit " + num);
+
+				ps = connection.prepareStatement(sql.toString());
+			}
+
 
 			ResultSet rs = ps.executeQuery();
 
