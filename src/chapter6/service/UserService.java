@@ -108,6 +108,17 @@ public class UserService {
 		}
 	}
 
+	public User select(String account) {
+
+		Connection connection = null;
+
+		try {
+			connection = getConnection();
+			User user = new UserDao().select(connection, account);
+			commit(connection);
+		}
+	}
+
 	public void update(User user) {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
