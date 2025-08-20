@@ -92,6 +92,11 @@ public class SettingServlet extends HttpServlet {
 		user.setPassword(request.getParameter("password"));
 		user.setEmail(request.getParameter("email"));
 		user.setDescription(request.getParameter("description"));
+
+		//リクエストのパスワードがEmptyでない場合のみパスワードをuserにセット
+		if(!request.getParameter("password").isEmpty()) {
+			user.setPassword(request.getParameter("password"));
+		}
 		return user;
 	}
 
@@ -101,7 +106,7 @@ public class SettingServlet extends HttpServlet {
 
 		String name = user.getName();
 		String account = user.getAccount();
-		String password = user.getPassword();
+//		String password = user.getPassword();
 		String email = user.getEmail();
 
 		if(!StringUtils.isEmpty(name) && (20 < name.length())) {
@@ -114,9 +119,10 @@ public class SettingServlet extends HttpServlet {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
 		}
 
-		if(StringUtils.isEmpty(password)) {
-			errorMessages.add("パスワードを入力してください");
-		}
+//      パスワードは入力必須でなくなるのでコメントアウト
+//		if(StringUtils.isEmpty(password)) {
+//			errorMessages.add("パスワードを入力してください");
+//		}
 
 		if(!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは0文字以下で入力してください");

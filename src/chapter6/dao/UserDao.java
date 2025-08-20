@@ -176,23 +176,44 @@ public class UserDao {
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("UPDATE users SET ");
-			sql.append("    account = ?, ");
-			sql.append("    name = ?, ");
-			sql.append("    email = ?, ");
-			sql.append("    password = ?, ");
-			sql.append("    description = ?, ");
-			sql.append("    updated_date = CURRENT_TIMESTAMP ");
-			sql.append("WHERE id = ?");
 
-			ps = connection.prepareStatement(sql.toString());
+			//if文でuser.getPassword()がEmptyかどうかで分岐
 
-			ps.setString(1, user.getAccount());
-			ps.setString(2, user.getName());
-			ps.setString(3, user.getEmail());
-			ps.setString(4, user.getPassword());
-			ps.setString(5, user.getDescription());
-			ps.setInt(6, user.getId());
+			if(!user.getPassword().isEmpty()) {
+				sql.append("UPDATE users SET ");
+				sql.append("    account = ?, ");
+				sql.append("    name = ?, ");
+				sql.append("    email = ?, ");
+				sql.append("    password = ?, ");
+				sql.append("    description = ?, ");
+				sql.append("    updated_date = CURRENT_TIMESTAMP ");
+				sql.append("WHERE id = ?");
+
+				ps = connection.prepareStatement(sql.toString());
+
+				ps.setString(1, user.getAccount());
+				ps.setString(2, user.getName());
+				ps.setString(3, user.getEmail());
+				ps.setString(4, user.getPassword());
+				ps.setString(5, user.getDescription());
+				ps.setInt(6, user.getId());
+			} else {
+				sql.append("UPDATE users SET ");
+				sql.append("    account = ?, ");
+				sql.append("    name = ?, ");
+				sql.append("    email = ?, ");
+				sql.append("    description = ?, ");
+				sql.append("    updated_date = CURRENT_TIMESTAMP ");
+				sql.append("WHERE id = ?");
+
+				ps = connection.prepareStatement(sql.toString());
+
+				ps.setString(1, user.getAccount());
+				ps.setString(2, user.getName());
+				ps.setString(3, user.getEmail());
+				ps.setString(4, user.getDescription());
+				ps.setInt(5, user.getId());
+			}
 
 			int count = ps.executeUpdate();
 			if(count == 0) {

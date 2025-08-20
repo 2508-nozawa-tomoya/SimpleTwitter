@@ -13,7 +13,7 @@
 	<body>
 		<div class="main-contents">
 
-			<c:if test="${ not empty errorMessages} }">
+			<c:if test="${ not empty errorMessages}">
 				<div class="errorMessages">
 					<ul>
 						<c:forEach items="${errorMessages}" var="errorMessage">

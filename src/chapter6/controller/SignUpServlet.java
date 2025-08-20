@@ -102,7 +102,7 @@ public class SignUpServlet extends HttpServlet {
 		}
 
 		if(!StringUtils.isEmpty(email) && (50 < email.length())) {
-			errorMessages.add("メールアドレスは0文字以下で入力してください");
+			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}
 
 		if(errorMessages.size() != 0) {

@@ -113,8 +113,11 @@ public class UserService {
 		Connection connection = null;
 		try {
 			//パスワード暗号化
-			String encPassword = CipherUtil.encrypt(user.getPassword());
-			user.setPassword(encPassword);
+			//userにパスワードがセットされている場合のみ
+			if(!user.getPassword().isEmpty()) {
+				String encPassword = CipherUtil.encrypt(user.getPassword());
+				user.setPassword(encPassword);
+			}
 
 			connection = getConnection();
 			new UserDao().update(connection, user);
