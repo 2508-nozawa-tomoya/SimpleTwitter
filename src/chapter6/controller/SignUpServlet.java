@@ -87,8 +87,15 @@ public class SignUpServlet extends HttpServlet {
 		String password = user.getPassword();
 		String email = user.getEmail();
 
+		User existingAccount=  new UserService().select(account);
+
 		if(!StringUtils.isEmpty(name) && (20 < name.length())) {
 			errorMessages.add("名前は20文字以下で入力してください");
+		}
+
+		//アカウント名が存在する場合エラーメッセージ表示
+		if(existingAccount != null) {
+			errorMessages.add("存在するアカウント名です");
 		}
 
 		if(StringUtils.isEmpty(account)) {
