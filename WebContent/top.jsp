@@ -71,6 +71,20 @@
 						<div class="text"><c:out value="${message.text}" /></div>
 						<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyy/MM/dd HH:mm:ss" /></div>
 					</div>
+
+					<!-- ログインしているときかつ自分の投稿にのみ表示 -->
+					<c:if test="${ isShowMessageForm && (message.userId == loginUser.id) }">
+						<!-- 削除ボタン -->
+						<form action="deleteMessage" method="post">
+							<input name="id" value="${message.id}" id="id" type="hidden" />
+							<input type="submit" value="削除" /><br />
+						</form>
+						<!-- 編集ボタン -->
+						<form action="edit" method="post">
+							<input name="id" value="${message.id}" id="id" type="hidden" />
+							<input type="submit" value="編集" /><br />
+						</form>
+					</c:if>
 				</c:forEach>
 			</div>
 			<div class="copyright">Copyright(c)TomoyaNozawa</div>
