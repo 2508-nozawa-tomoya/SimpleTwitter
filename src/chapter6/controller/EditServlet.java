@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -41,12 +42,35 @@ public class EditServlet extends HttpServlet {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-		int messageId = Integer.parseInt(request.getParameter("id"));
+		HttpSession session = request.getSession();
+		List<String> errorMessages = new ArrayList<String>();
 
-		Message message = new MessageService().select(messageId);
 
-		request.setAttribute("message", message);
-		request.getRequestDispatcher("edit.jsp").forward(request, response);
+		//パラメータからメッセージidを取得し、int型に変換
+		//変換できなかったらエラーメッセージを表示
+		try {
+			int messageId = Integer.parseInt(request.getParameter("id"));
+
+			Message message = new MessageService().select(messageId);
+
+			if(message != null) {
+				request.setAttribute("message", message);
+				request.getRequestDispatcher("edit.jsp").forward(request, response);
+			} else {
+				//message(bean)がnullであればエラーメッセージを表示
+				//存在しないつぶやきId入力したらmessageの中身はnull
+				errorMessages.add("不正なパラメーターが入力されました");
+				session.setAttribute("errorMessages", errorMessages);
+				response.sendRedirect("./");
+				return;
+			}
+		} catch (NumberFormatException e) {
+			errorMessages.add("不正なパラメーターが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
+
 	}
 
 	//つぶやきの編集内容を更新
@@ -61,18 +85,16 @@ public class EditServlet extends HttpServlet {
 		String text = request.getParameter("text");
 		int messageId = Integer.parseInt(request.getParameter("id"));
 
-
-		if(!isValid(text, errorMessages)) {
-			request.setAttribute("errorMessages", errorMessages);
-			request.setAttribute("text", text);
-			request.setAttribute("id", messageId);
-			request.getRequestDispatcher("/edit.jsp").forward(request, response);
-			return;
-		}
-
 		Message message = new Message();
 		message.setId(messageId);
 		message.setText(text);
+
+		if(!isValid(text, errorMessages)) {
+			request.setAttribute("errorMessages", errorMessages);
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("/edit.jsp").forward(request, response);
+			return;
+		}
 
 		new MessageService().edit(message);
 		response.sendRedirect("./");

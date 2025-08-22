@@ -47,10 +47,7 @@
 			<!--メッセージフォーム表示 -->
 			<div class="form-area">
 				<form action="edit" method="post">
-					<textarea name="text" cols="100" rows="5" class="tweet-box">
-						<c:out value="${message.text}"></c:out>
-					</textarea>
-					<br />
+					<textarea name="text" cols="100" rows="5" class="tweet-box"><c:out value="${message.text}" /></textarea>
 					<input name="id" value="${message.id}" id="id" type="hidden" />
 					<input type="submit" value="更新"> (140文字まで)
 				</form>
