@@ -88,10 +88,10 @@
 						</form>
 					</c:if>
 
-					<!-- ログインしているときかつ自分以外の投稿のみに表示  -->
-					<c:if test="${ isShowMessageForm && (message.userId != loginUser.id) }">
+					<!-- ログインしているときのみに表示  -->
+					<c:if test="${ isShowMessageForm }">
 						<!-- 返信フォーム -->
-						<form action="comments" method="post">
+						<form action="comment" method="post">
 							返信<br />
 							<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
 							<br />
@@ -99,6 +99,21 @@
 							<input type="submit" value="返信"> (140文字まで)
 						</form>
 					</c:if>
+					<!-- 返信を表示 -->
+					<c:forEach items="${comments}" var="comment">
+						<c:if test="${comment.messageId == message.id }">
+							<div class="message">
+								<div class="account-name">
+									<span class="account"><c:out value="${comment.account}" /></span>
+									<span class="name"><c:out value="${comment.name}" /></span>
+								</div>
+								<div class="text">
+									<pre><c:out value="${comment.text}" /></pre>
+								</div>
+								<div class="date"><fmt:formatDate value="${comment.createdDate}" pattern="yyy/MM/dd HH:mm:ss" /></div>
+							</div>
+						</c:if>
+					</c:forEach>
 				</c:forEach>
 			</div>
 			<div class="copyright">Copyright(c)TomoyaNozawa</div>
