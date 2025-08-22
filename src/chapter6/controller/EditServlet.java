@@ -48,7 +48,7 @@ public class EditServlet extends HttpServlet {
 		String id = request.getParameter("id");
 
 		//パラメーターが数値でない場合またはnullの場合エラーメッセージ表示
-		if((!id.matches("^[0-9]+$")) || (id == null )) {
+		if((id == null ) || (!id.matches("^[0-9]+$"))) {
 			errorMessages.add("不正なパラメーターが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");

@@ -95,7 +95,8 @@
 							返信<br />
 							<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
 							<br />
-							<input type="submit" value="返信">
+							<input name="id" value="${message.id}" id="id" type="hidden" />
+							<input type="submit" value="返信"> (140文字まで)
 						</form>
 					</c:if>
 				</c:forEach>
