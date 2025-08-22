@@ -87,6 +87,17 @@
 							<input type="submit" value="編集" /><br />
 						</form>
 					</c:if>
+
+					<!-- ログインしているときかつ自分以外の投稿のみに表示  -->
+					<c:if test="${ isShowMessageForm && (message.userId != loginUser.id) }">
+						<!-- 返信フォーム -->
+						<form action="comments" method="post">
+							返信<br />
+							<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+							<br />
+							<input type="submit" value="返信">
+						</form>
+					</c:if>
 				</c:forEach>
 			</div>
 			<div class="copyright">Copyright(c)TomoyaNozawa</div>

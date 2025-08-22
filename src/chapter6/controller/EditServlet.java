@@ -45,32 +45,31 @@ public class EditServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		List<String> errorMessages = new ArrayList<String>();
 
+		String id = request.getParameter("id");
 
-		//パラメータからメッセージidを取得し、int型に変換
-		//変換できなかったらエラーメッセージを表示
-		try {
-			int messageId = Integer.parseInt(request.getParameter("id"));
-
-			Message message = new MessageService().select(messageId);
-
-			if(message != null) {
-				request.setAttribute("message", message);
-				request.getRequestDispatcher("edit.jsp").forward(request, response);
-			} else {
-				//message(bean)がnullであればエラーメッセージを表示
-				//存在しないつぶやきId入力したらmessageの中身はnull
-				errorMessages.add("不正なパラメーターが入力されました");
-				session.setAttribute("errorMessages", errorMessages);
-				response.sendRedirect("./");
-				return;
-			}
-		} catch (NumberFormatException e) {
+		//パラメーターが数値でない場合またはnullの場合エラーメッセージ表示
+		if((!id.matches("^[0-9]+$")) || (id == null )) {
 			errorMessages.add("不正なパラメーターが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
 			return;
 		}
 
+		int messageId = Integer.parseInt(request.getParameter("id"));
+
+		Message message = new MessageService().select(messageId);
+
+		if(message != null) {
+			request.setAttribute("message", message);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
+		} else {
+			//message(bean)がnullであればエラーメッセージを表示
+			//存在しないつぶやきId入力したらmessageの中身はnull
+			errorMessages.add("不正なパラメーターが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
 	}
 
 	//つぶやきの編集内容を更新
@@ -96,7 +95,7 @@ public class EditServlet extends HttpServlet {
 			return;
 		}
 
-		new MessageService().edit(message);
+		new MessageService().update(message);
 		response.sendRedirect("./");
 	}
 

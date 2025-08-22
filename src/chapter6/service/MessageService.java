@@ -142,14 +142,15 @@ public class MessageService {
 		}
 	}
 
-	public void edit(Message message) {
+	//つぶやき編集
+	public void update(Message message) {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			new MessageDao().edit(connection, message);
+			new MessageDao().update(connection, message);
 			commit(connection);
 		} catch(RuntimeException e) {
 			rollback(connection);

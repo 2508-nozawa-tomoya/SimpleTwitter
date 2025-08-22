@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import chapter6.beans.Message;
-import chapter6.exception.NoRowsUpdatedRuntimeException;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
 
@@ -31,6 +30,7 @@ public class MessageDao {
 		application.init();
 	}
 
+	//メッセージをDBに追加
 	public void insert(Connection connection, Message message) {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -82,9 +82,6 @@ public class MessageDao {
 
 			if(messages.isEmpty()) {
 				return null;
-			} else if(2 <= messages.size()) {
-				log.log(Level.SEVERE, "メッセージが重複しています", new IllegalStateException());
-				throw new IllegalStateException("メッセージが重複しています");
 			} else {
 				return messages.get(0);
 			}
@@ -121,7 +118,7 @@ public class MessageDao {
 	}
 
 	//つぶやき編集
-	public void edit (Connection connection, Message message) {
+	public void update (Connection connection, Message message) {
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 				" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
@@ -139,11 +136,7 @@ public class MessageDao {
 			ps.setString(1, message.getText());
 			ps.setInt(2, message.getId());
 
-			int count = ps.executeUpdate();
-			if(count == 0) {
-				log.log(Level.SEVERE, "更新対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
-				throw new NoRowsUpdatedRuntimeException();
-			}
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
 			throw new SQLRuntimeException(e);
@@ -173,8 +166,5 @@ public class MessageDao {
 		} finally {
 			close(rs);
 		}
-
-
-
 	}
 }
