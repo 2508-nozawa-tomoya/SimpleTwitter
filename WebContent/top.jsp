@@ -42,7 +42,7 @@
 					</c:forEach>
 					</ul>
 				</div>
-				<c:remove var="errorMessage" scope="session" />
+				<c:remove var="errorMessages" scope="session" />
 			</c:if>
 			<!-- 日付絞り込み -->
 			<form action="./" method="get">

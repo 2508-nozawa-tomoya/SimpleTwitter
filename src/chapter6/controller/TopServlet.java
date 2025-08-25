@@ -45,11 +45,7 @@ public class TopServlet extends HttpServlet {
 		User user = (User) request.getSession().getAttribute("loginUser");
 		if(user != null) {
 			isShowMessageForm = true;
-		} else {
-			//userがnullの場合セッション終了
-			request.getSession().invalidate();
 		}
-
 		//リクエストからユーザーID、start、endを取得し引数としてMessageServlet.select()に渡す
 		String userId = request.getParameter("user_id");
 		String startDate = request.getParameter("start");
